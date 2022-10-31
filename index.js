@@ -14,11 +14,13 @@ import Cache from 'cache';
 const app = new Koa();
 const myCache = new Cache(120 * 60 * 1000);
 
-const THEME  = process.env.CONFIG_THEME || 'dracula';
+// "PAT_1" with your [GitHub Personal Access Token](https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token).
+// process.env.PAT_1 = '';
 const USER = process.env.CONFIG_USER || '';
 
 async function cardHandler(ctx) {
-    const cacheKey = 'card';
+    const theme = ctx.query.theme || 'default';
+    const cacheKey = `card:${theme}`;
 
     let ret = myCache.get(cacheKey);
     if (!ret) {
@@ -48,7 +50,7 @@ async function cardHandler(ctx) {
         // text_color,
         // text_bold: parseBoolean(text_bold),
         // bg_color,
-        theme: ctx.query.theme || THEME,
+        theme,
         // custom_title,
         // border_radius,
         // border_color,
@@ -65,7 +67,8 @@ async function cardHandler(ctx) {
 }
 
 async function topLangHandler(ctx) {
-  const cacheKey = 'toplang';
+  const theme = ctx.query.theme || 'default';
+  const cacheKey = `toplang:${theme}`;
 
   let ret = myCache.get(cacheKey);
   if (!ret) {
@@ -90,7 +93,7 @@ async function topLangHandler(ctx) {
       // title_color,
       // text_color,
       // bg_color,
-      theme: ctx.query.theme || THEME,
+      theme,
       layout: 'compact',
       langs_count: 10,
       // border_radius,
@@ -108,10 +111,11 @@ async function topLangHandler(ctx) {
 
 async function pinHandler(ctx) {
   const repo = ctx.query.repo;
+  const theme = ctx.query.theme || 'default';
   if (!repo) {
     return;
   }
-  const cacheKey = `pin:${repo}`;
+  const cacheKey = `pin:${theme}:${repo}`;
   let ret = myCache.get(cacheKey);
   if (!ret) {
     console.log('fetch', cacheKey);
@@ -122,7 +126,7 @@ async function pinHandler(ctx) {
       // icon_color,
       // text_color,
       // bg_color,
-      theme: ctx.query.theme || THEME,
+      theme,
       // border_radius,
       // border_color,
       show_owner: false,
