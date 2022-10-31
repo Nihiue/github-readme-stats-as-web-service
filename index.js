@@ -1,4 +1,5 @@
 import Koa from 'koa';
+
 import { renderStatsCard } from "./github-readme-stats/src/cards/stats-card.js";
 import { fetchStats } from "./github-readme-stats/src/fetchers/stats-fetcher.js";
 
@@ -13,8 +14,8 @@ import Cache from 'cache';
 const app = new Koa();
 const myCache = new Cache(60 * 60 * 1000);
 
-const THEME  = 'dracula';
-const USER = 'nihiue';
+const THEME  = process.env.CONFIG_THEME || 'dracula';
+const USER = process.env.CONFIG_USER || '';
 
 async function cardHandler(ctx) {
     const cacheKey = 'card';
@@ -151,5 +152,7 @@ app.use(async function router(ctx) {
 });
 
 const port = 3000;
+
 app.listen(port);
-console.log(`listen on ${port}`)
+
+console.log(`listen on ${port}`);
