@@ -12,7 +12,7 @@ import { renderRepoCard } from "./github-readme-stats/src/cards/repo-card.js";
 import Cache from 'cache';
 
 const app = new Koa();
-const myCache = new Cache(120 * 60 * 1000);
+const myCache = new Cache(8 * 60 * 60 * 1000);
 
 // "PAT_1" with your [GitHub Personal Access Token](https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token).
 // process.env.PAT_1 = '';
@@ -62,7 +62,7 @@ async function cardHandler(ctx) {
     }
 
     ctx.set('Content-Type', 'image/svg+xml');
-    ctx.set('Cache-Control', 'public, max-age=7200');
+    ctx.set('Cache-Control', 'public, max-age=86400');
     ctx.body = ret;
 }
 
@@ -105,7 +105,7 @@ async function topLangHandler(ctx) {
   }
 
   ctx.set('Content-Type', 'image/svg+xml');
-  ctx.set('Cache-Control', 'public, max-age=7200');
+  ctx.set('Cache-Control', 'public, max-age=86400');
   ctx.body = ret;
 }
 
@@ -137,7 +137,7 @@ async function pinHandler(ctx) {
   }
 
   ctx.set('Content-Type', 'image/svg+xml');
-  ctx.set('Cache-Control', 'public, max-age=43200');
+  ctx.set('Cache-Control', 'public, max-age=86400');
   ctx.body = ret;
 }
 
